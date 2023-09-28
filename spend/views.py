@@ -31,7 +31,6 @@ class SpendStatisticView(ListAPIView):
             impressions=Sum('impressions'),
             clicks=Sum('clicks'),
             conversion=Sum('conversion'),
-
         )
         return objs
 
