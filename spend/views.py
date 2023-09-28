@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView
@@ -21,9 +22,16 @@ class SpendSerializer(serializers.ModelSerializer):
 
 
 class SpendStatisticView(ListAPIView):
-    queryset = SpendStatistic.objects.all()
+    queryset = None
     serializer_class = SpendSerializer
 
+    def get_queryset(self):
+        objs = SpendStatistic.objects.values('name', 'date').annotate(
+            spend=Sum('spend'),
+            impressions=Sum('impressions'),
+            clicks=Sum('clicks'),
+            conversion=Sum('conversion'),
 
-
+        )
+        return objs
 
